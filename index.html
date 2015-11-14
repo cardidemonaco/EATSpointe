@@ -5,9 +5,18 @@
     <title>EATSpointe | Where to find food and drink in Eastpointe!</title>
     <style>
         html, body {
+            background-color: black;
+            font-family: Arial;
             height: 100%;
             margin: 0;
             padding: 0;
+            padding-top: 8px;
+        }
+        a, a:visited, a:link{
+            text-decoration: none;
+        }
+        a:hover{
+            text-decoration: underline;
         }
         #map {
             height: 100%;
@@ -36,18 +45,48 @@
             z-index: 5;
         }
         
-        .a {color: red;}
-        .i {color: green;}
-        .m {color: blue;}
+        .a {background-color: #9abb26;} /* green */
+        .b {background-color: #019fb8;} /* blue */
+        .c {background-color: #fec724; color: black;} /* yellow */
+        .d {background-color: #f0f0f0; color: black;} /* gray */
+        
+        span{
+            padding: 2px;
+        }
     </style>
     
   </head>
 
   <body>
   
-    <div>EATSpointe</div>
-    <div>| Dine-In | Take-Out ||| <span class="a"><a onmouseclick="" href="">American</a></span> | <span class="i">Italian</span> | <span class="m">Mexican</span> | Pizza | Fast Food | Coffee ||| 51 Locations |</div>
-    <div id="map"></div>
+    <div style="display: inline; background-color: black; color: whitesmoke; font-size: 30px; padding-left: 8px; padding-right: 12px;">
+        <b>EATSpointe</b>
+    </div>
+    <div style="display: inline; background-color: black; color: whitesmoke;">
+        <span class="a">Dine-In</span>
+        <span class="a">Take-Out</span> 
+        ||| 
+        <span class="b">American</span>
+        <span class="b">BBQ</span>
+        <span class="b">Chinese</span>
+        <span class="b">Italian</span>
+        <span class="b">Mexican</span>
+        <span class="b">Pizza</span>
+        <span class="b">Sandwiches</span>
+        |||
+        <span class="c">Alcohol</span>
+        <span class="c">Bar</span>
+        <span class="c">Coffee</span>
+        <span class="c">Diner</span>
+        <span class="c">Family friendly</span>
+        |||
+        <span class="d">Gluten-free friendly</span>
+        <span class="d">Vegan friendly</span>
+        <span class="d">Vegetarian friendly</span>
+        ||| 
+        63 Locations
+    </div>
+    <div id="map" style=""></div>
     
     <script>
         var map;
