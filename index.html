@@ -45,10 +45,11 @@
             z-index: 5;
         }
         
-        .a {background-color: #9abb26;} /* green */
-        .b {background-color: #019fb8;} /* blue */
-        .c {background-color: #fec724; color: black;} /* yellow */
-        .d {background-color: #f0f0f0; color: black;} /* gray */
+        .a {background-color: #ac4362;} /* green */
+        .c {background-color: #019fb8;} /* blue */
+        .b {background-color: #fec724; color: black;} /* yellow */
+        .d {background-color: #9abb26; color: black;} /* purple */
+        
         
         span{
             padding: 2px;
@@ -86,47 +87,49 @@
         ||| 
         63 Locations
     </div>
-    <div id="map" style=""></div>
+    <div id="map" style="margin-top: 8px;"></div>
     
     <script>
+    
+        //Global variables
         var map;
-        
+    
+        function g(lat,lng){
+            return new google.maps.LatLng(lat,lng);
+        }
+    
         function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 15,
-            center: {lat: 42.469377, lng: -82.955647},
-            mapTypeId: google.maps.MapTypeId.MAP
-          });
-            
-            //Add points to the map... (later I will put the data into a data structure instead of embedded here)
-            var contentString = '<img src="/img/cloverleaf.jpg" /><br />' +
-                '<b>Cloverleaf Bar & Restaurant</b><br />' +
-                '24443 Gratiot Ave, Eastpointe, MI 48021<br />' +
-                '(586) 777-5391<br />' + 
-                '<a href="http://www.cloverleafrestaurant.com">www.cloverleafrestaurant.com</a><br /><br />' +
-                '<b>Eastpointe-Roseville Chamber of Commerce Member</b><br />' +
-                '<i>Dine-in and Take-out</i><br />' + 
-                'Pizza, Italian';
-            
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
+                map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: {lat: 42.463964, lng: -82.955647},
+                mapTypeId: google.maps.MapTypeId.MAP
             });
-            
-            var marker = new google.maps.Marker({
-                position: {lat: 42.474681, lng: -82.952110}, //new google.maps.LatLng(42.474681, -82.952110),
-                map: map,
-                title: 'Cloverleaf'
-            });
-            marker.addListener('click', function() {
-                infowindow.open(map, marker);
-            });
-            
+          
+            // Array of locations
+            var y = new Array(100);
+            // 0:Active/Inactive; 1:Name; 2:Description; 3:Address; 4:Lat/Lng; 5:ERCC Member?; 6:Types
+            y[0] = [1, "Cloverleaf Bar & Restaurant", "cloverleaf", "24443 Gratiot Avenue", g(42.474663, -82.952055), 1, "Dine-In, Carry-Out, Alcohol, American, Bar, Italian, Pizza"];
+            y[1] = [1, "Villa Restaurant & Pizzeria", "villa", "21311 Gratiot Avenue", g(42.454643, -82.965264), 1, "Dine-In, Carry-Out, Italian, Pizza"];
+            y[2] = [1, "Donna's Family Dining", "donna", "18640 East 10 Mile Road", g(42.479889, -82.927846), 1, "Dine-In, Carry-Out, Diner, American"];
+            y[3] = [1, "Friends Tavern", "friend", "23850 Gratiot Avenue", g(42.472043, -82.952674), 1, "Dine-In, Bar, Alcohol"];
+    
+            //Add each item in the array above to the map (I NEED TO MOVE THIS AROUND MORE LIKE exploredetroitnow.com AND USE "LISTENERS")
+            for (var i=0; i<y.length; i++) 
+            {
+                var infowindow = new google.maps.InfoWindow({
+                    content: y[i][2]
+                });
+                
+                var marker = new google.maps.Marker({
+                    position: y[i][4],
+                    map: map,
+                    title: y[i][1]
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+            }
         }
-        
-        function showCloverleaf() {
-            
-        }
-
     </script>
 
 
