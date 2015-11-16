@@ -12,15 +12,9 @@
             padding: 0;
             padding-top: 8px;
         }
-        a, a:visited, a:link{
-            text-decoration: none;
-        }
-        a:hover{
-            text-decoration: underline;
-        }
-        #map {
-            height: 100%;
-        }
+        a, a:visited, a:link{text-decoration: none;}
+        a:hover{text-decoration: underline;}
+        #map {height: 100%;}
         #floating-panel {
               position: absolute;
               top: 10px;
@@ -45,15 +39,11 @@
             z-index: 5;
         }
         
+        span {border-radius: 4px; padding: 2px;}
         .a {background-color: #ac4362;} /* green */
         .c {background-color: #019fb8;} /* blue */
         .b {background-color: #fec724; color: black;} /* yellow */
         .d {background-color: #9abb26; color: black;} /* purple */
-        
-        
-        span{
-            padding: 2px;
-        }
     </style>
     
   </head>
@@ -76,6 +66,7 @@
         <span class="b">Sandwiches</span>
         |||
         <span class="c">Alcohol</span>
+        <span class="c">Bakery</span>
         <span class="c">Bar</span>
         <span class="c">Coffee</span>
         <span class="c">Diner</span>
@@ -86,50 +77,105 @@
         <span class="d">Vegetarian friendly</span>
         ||| 
         63 Locations
+        |||
+        FB TW
     </div>
     <div id="map" style="margin-top: 8px;"></div>
     
     <script>
+    // SCRIPT TO POPULATE THE MAP
     
-        //Global variables
-        var map;
-    
-        function g(lat,lng){
-            return new google.maps.LatLng(lat,lng);
-        }
-    
+        // Create the Google Map
         function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
+            
+            var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 14,
                 center: {lat: 42.463964, lng: -82.955647},
                 mapTypeId: google.maps.MapTypeId.MAP
             });
+            
+            // This function shortens the code in the following Array (y)
+            function g(lat,lng){
+                return new google.maps.LatLng(lat,lng);
+            }
           
             // Array of locations
             var y = new Array(100);
             // 0:Active/Inactive; 1:Name; 2:Description; 3:Address; 4:Lat/Lng; 5:ERCC Member?; 6:Types
-            y[0] = [1, "Cloverleaf Bar & Restaurant", "cloverleaf", "24443 Gratiot Avenue", g(42.474663, -82.952055), 1, "Dine-In, Carry-Out, Alcohol, American, Bar, Italian, Pizza"];
-            y[1] = [1, "Villa Restaurant & Pizzeria", "villa", "21311 Gratiot Avenue", g(42.454643, -82.965264), 1, "Dine-In, Carry-Out, Italian, Pizza"];
-            y[2] = [1, "Donna's Family Dining", "donna", "18640 East 10 Mile Road", g(42.479889, -82.927846), 1, "Dine-In, Carry-Out, Diner, American"];
-            y[3] = [1, "Friends Tavern", "friend", "23850 Gratiot Avenue", g(42.472043, -82.952674), 1, "Dine-In, Bar, Alcohol"];
+            y[0] = [1, 'Cloverleaf Bar & Restaurant', '', '24443 Gratiot Avenue', g(42.474663, -82.952055), 1, 'Alcohol, American, Bar'];
+            y[1] = [1, 'Villa Restaurant & Pizzeria', '', '21311 Gratiot Avenue', g(42.454643, -82.965264), 1, 'Italian'];
+            y[2] = [1, 'Donna&#146;s Family Dining', '', '18640 East 10 Mile Road', g(42.479889, -82.927846), 1, 'American, Diner'];
+            y[3] = [1, 'Friends Tavern', '', '23850 Gratiot Avenue', g(42.472043, -82.952674), 1, 'Bar'];
+            y[4] = [1, 'Grand Dimitre&#146;s', '', '25001 Gratiot Avenue', g(42.480217, -82.948572), 1, 'Diner, American'];
+            y[5] = [1, 'Hungry Howie&#146;s Pizza', '', '22441 Kelly Road', g(42.463503, -82.928942), 1, 'Pizza'];
+            y[6] = [1, 'McDonald&#146;s', '', '17921 East 9 Mile Road', g(42.465577, -82.935909), 1, 'American'];
+            y[7] = [1, 'Olive Garden', '', '24845 Gratiot Avenue', g(42.478462, -82.949634), 1, 'Italian'];
+            y[8] = [1, 'Papa John&#146;s Pizza', '', '22241 Kelly Road', g(42.462028, -82.930547), 1, 'Pizza'];
+            y[9] = [1, 'Papa Romano&#146;s & Mr. Pita', '', '22661 Gratiot Avenue', g(42.464322, -82.959707), 1, 'Pizza'];
+            y[10] = [1, 'Pizza Me', '', '', g(), 1, 'Pizza'];
+            y[11] = [1, 'Salvatore Scallopini', '', '22611 Gratiot Avenue', g(42.463848, -82.959658), 1, 'Italian'];
+            y[12] = [1, 'Sugarbush Tavern', '', '19080 East 10 Mile Road', g(42.479991, -82.921896), 1, 'Bar, American'];
+            y[13] = [1, 'Tim Horton&#146;s', '', '17210 East 9 Mile Road', g(42.464667, -82.944054), 1, 'Coffee'];
+            y[14] = [1, '10x Better Soul Food', '', '', g(), 0, 'BBQ'];
+            y[15] = [1, 'Adriana&#146;s Kitchen', '', '', g(42.465112, -82.948927), 0, ''];
+            y[16] = [1, 'Andary&#146;s Grill & Deli', '', '', g(42.470411, -82.954819), 0, ''];
+            y[17] = [1, 'Big Boy', '', '', g(42.465559, -82.958383), 0, ''];
+            y[18] = [1, 'Boney Moroney Bar', '', '', g(42.456316, -82.962807), 0, ''];
+            y[19] = [1, 'Bread Basket Deli', '', '', g(42.450935, -82.940886), 0, ''];
+            y[20] = [1, 'Burger King', '', '', g(42.450942, -82.966426), 0, ''];
+            y[21] = [1, 'China Wok', '', '', g(42.462667, -82.929915), 0, ''];
+            y[22] = [1, 'Coffee Break Café', '', '', g(42.479804, -82.920525), 0, ''];
+            y[23] = [1, 'Dairy Queen Brazier', '', '', g(42.465111, -82.944537), 0, ''];
+            y[24] = [1, 'Domino&#146;s Pizza', '', '', g(42.479924, -82.964993), 0, ''];
+            y[25] = [1, 'Eastpointe Pub', '', '', g(42.465298, -82.924711), 0, ''];
+            y[26] = [1, 'Five Guys & Fries', '', '', g(42.464157, -82.959707), 0, ''];
+            y[27] = [1, 'Guiseppe&#146;s Bakery', '', '', g(42.458315, -82.934028), 0, ''];
+            y[28] = [1, 'Happy Garden', '', '', g(42.462424, -82.958903), 0, ''];
+            y[29] = [1, 'Happy&#146;s Pizza', '', '', g(42.471669, -82.952741), 0, ''];
+            y[30] = [1, 'Jet&#146;s Pizza', '', '', g(42.479976, -82.918491), 0, ''];
+
     
-            //Add each item in the array above to the map (I NEED TO MOVE THIS AROUND MORE LIKE exploredetroitnow.com AND USE "LISTENERS")
-            for (var i=0; i<y.length; i++) 
-            {
-                var infowindow = new google.maps.InfoWindow({
-                    content: y[i][2]
-                });
+            // Populate the map by adding markers
+            for (var i=0; i<y.length; i++) {
+                addMarker();
+            } // END for
+    
+            // Here is where the map will populate initially (HOW WILL I FILTER ACCORDING TO BUTTONS?)
+            function addMarker(){
                 
-                var marker = new google.maps.Marker({
-                    position: y[i][4],
-                    map: map,
-                    title: y[i][1]
-                });
-                marker.addListener('click', function() {
-                    infowindow.open(map, marker);
-                });
-            }
-        }
+                    // Create marker
+                    var marker = new google.maps.Marker({
+                        title: y[i][1],
+                        position: y[i][4],
+                        map: map
+                        // icon: shamrock
+                    });
+                    
+                    // Create content for info window
+                    var c = "";
+                    
+                    var ercc = "";
+                    if(y[i][5] == "1"){
+                        ercc = "<i>Eastpointe-Roseville Chamber of Commerce Member</i><br />"
+                    }
+                    else{
+                        ercc = "";
+                    }
+                    
+                    c = '<b>' + y[i][1] + '</b><br />' + //Name
+                        y[i][3] + '<br />' + //Street Address
+                        ercc;
+                    
+                    // info window for click
+                    var infowindow = new google.maps.InfoWindow({
+                        content: c
+                    });
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+                    
+            } // END addMarkers
+        } // END initMap
     </script>
 
 
