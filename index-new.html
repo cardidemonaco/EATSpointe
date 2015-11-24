@@ -3,6 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>EATSpointe | Where to find food and drink in Eastpointe!</title>
+    
+    <!-- 
+        Cloud9 Terminal - https://docs.c9.io/docs/terminal
+        Git Cheat Sheet - https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf 
+    -->
+    
     <style>
         html, body {
             background-color: black;
@@ -104,21 +110,21 @@
             // 0:Active/Inactive; 1:Name; 2:Description; 3:Address; 4:Lat/Lng; 5:ERCC Member?; 6:Types
 			y[0] = [1, 'Cloverleaf Bar & Restaurant', '', '24443 Gratiot Avenue', g(42.474663, -82.952055), 1, 'Alcohol, American, Bar'];
 			y[1] = [1, 'Villa Restaurant & Pizzeria', '', '21311 Gratiot Avenue', g(42.454643, -82.965264), 1, 'Italian'];
-			y[2] = [1, 'Donna's Family Dining', '', '18640 East 10 Mile Road', g(42.479889, -82.927846), 1, 'American, Diner'];
+			y[2] = [1, 'Donna&apos;s Family Dining', '', '18640 East 10 Mile Road', g(42.479889, -82.927846), 1, 'American, Diner'];
 			y[3] = [1, 'Friends Tavern', '', '23850 Gratiot Avenue', g(42.472043, -82.952674), 1, 'Bar'];
-			y[4] = [1, 'Grand Dimitre's', '', '25001 Gratiot Avenue', g(42.480217, -82.948572), 1, 'Diner, American'];
-			y[5] = [1, 'Hungry Howie's Pizza', '', '22441 Kelly Road', g(42.463503, -82.928942), 1, 'Pizza'];
-			y[6] = [1, 'McDonald's', '', '17921 East 9 Mile Road', g(42.465577, -82.935909), 1, 'American'];
+			y[4] = [1, 'Grand Dimitre&apos;s', '', '25001 Gratiot Avenue', g(42.480217, -82.948572), 1, 'Diner, American'];
+			y[5] = [1, 'Hungry Howie&apos;s Pizza', '', '22441 Kelly Road', g(42.463503, -82.928942), 1, 'Pizza'];
+			y[6] = [1, 'McDonald&apos;s', '', '17921 East 9 Mile Road', g(42.465577, -82.935909), 1, 'American'];
 			y[7] = [1, 'Olive Garden', '', '24845 Gratiot Avenue', g(42.478462, -82.949634), 1, 'Italian'];
-			y[8] = [1, 'Papa John's Pizza', '', '22241 Kelly Road', g(42.462028, -82.930547), 1, 'Pizza'];
-			y[9] = [1, 'Papa Romano's & Mr. Pita', '', '22661 Gratiot Avenue', g(42.464322, -82.959707), 1, 'Pizza'];
+			y[8] = [1, 'Papa John&apos;s Pizza', '', '22241 Kelly Road', g(42.462028, -82.930547), 1, 'Pizza'];
+			y[9] = [1, 'Papa Romano&apos;s & Mr. Pita', '', '22661 Gratiot Avenue', g(42.464322, -82.959707), 1, 'Pizza'];
 			y[10] = [1, 'Pizza Me', '', '', g(), 1, 'Pizza'];
 			y[11] = [1, 'Salvatore Scallopini', '', '22611 Gratiot Avenue', g(42.463848, -82.959658), 1, 'Italian'];
 			y[12] = [1, 'Sugarbush Tavern', '', '19080 East 10 Mile Road', g(42.479991, -82.921896), 1, 'Bar, American'];
-			y[13] = [1, 'Tim Horton's', '', '17210 East 9 Mile Road', g(42.464667, -82.944054), 1, 'Coffee'];
+			y[13] = [1, 'Tim Horton&apos;s', '', '17210 East 9 Mile Road', g(42.464667, -82.944054), 1, 'Coffee'];
 			y[14] = [1, '10x Better Soul Food', '', '', g(), 0, 'BBQ'];
-			y[15] = [1, 'Adriana's Kitchen', '', '', g(42.465112, -82.948927), 0, ''];
-			y[16] = [1, 'Andary's Grill & Deli', '', '', g(42.470411, -82.954819), 0, ''];
+			y[15] = [1, 'Adriana&apos;s Kitchen', '', '', g(42.465112, -82.948927), 0, ''];
+			y[16] = [1, 'Andary&apos;s Grill & Deli', '', '', g(42.470411, -82.954819), 0, ''];
 			y[17] = [1, 'Big Boy', '', '', g(42.465559, -82.958383), 0, ''];
 			y[18] = [1, 'Boney Moroney Bar', '', '', g(42.456316, -82.962807), 0, ''];
 			y[19] = [1, 'Bread Basket Deli', '', '', g(42.450935, -82.940886), 0, ''];
@@ -126,46 +132,47 @@
 			y[21] = [1, 'China Wok', '', '', g(42.462667, -82.929915), 0, ''];
 			y[22] = [1, 'Coffee Break Café', '', '', g(42.479804, -82.920525), 0, ''];
 			y[23] = [1, 'Dairy Queen Brazier', '', '', g(42.465111, -82.944537), 0, ''];
-			y[24] = [1, 'Domino's Pizza', '', '', g(42.479924, -82.964993), 0, ''];
+			y[24] = [1, 'Domino&apos;s Pizza', '', '', g(42.479924, -82.964993), 0, ''];
 			y[25] = [1, 'Eastpointe Pub', '', '', g(42.465298, -82.924711), 0, ''];
 			y[26] = [1, 'Five Guys & Fries', '', '', g(42.464157, -82.959707), 0, ''];
-			y[27] = [1, 'Guiseppe's Bakery', '', '', g(42.458315, -82.934028), 0, ''];
+			y[27] = [1, 'Guiseppe&apos;s Bakery', '', '', g(42.458315, -82.934028), 0, ''];
 			y[28] = [1, 'Happy Garden', '', '', g(42.462424, -82.958903), 0, ''];
-			y[29] = [1, 'Happy's Pizza', '', '', g(42.471669, -82.952741), 0, ''];
-			y[30] = [1, 'Jet's Pizza', '', '', g(42.479976, -82.918491), 0, ''];
-			y[31] = [1, 'KC's Dairy Twist', '', '', g(42.479825, -82.958237), 0, ''];
+			y[29] = [1, 'Happy&apos;s Pizza', '', '', g(42.471669, -82.952741), 0, ''];
+			y[30] = [1, 'Jet&apos;s Pizza', '', '', g(42.479976, -82.918491), 0, ''];
+			y[31] = [1, 'KC&apos;s Dairy Twist', '', '', g(42.479825, -82.958237), 0, ''];
 			y[32] = [1, 'Marz Bar', '', '', g(42.479803, -82.964470), 0, ''];
-			y[33] = [1, 'Legend's Coney Express', '', '', g(42.465404, -82.937518), 0, ''];
-			y[34] = [1, 'Little Caesar's', '', '', g(42.479923, -82.955558), 0, ''];
-			y[35] = [1, 'McGee's Lounge', '', '', g(42.459181, -82.961050), 0, ''];
-			y[36] = [1, 'O'Hara's Irish Pub', '', '', g(42.479876, -82.956645), 0, ''];
+			y[33] = [1, 'Legend&apos;s Coney Express', '', '', g(42.465404, -82.937518), 0, ''];
+			y[34] = [1, 'Little Caesar&apos;s', '', '', g(42.479923, -82.955558), 0, ''];
+			y[35] = [1, 'McGee&apos;s Lounge', '', '', g(42.459181, -82.961050), 0, ''];
+			y[36] = [1, 'O&apos;Hara&apos;s Irish Pub', '', '', g(42.479876, -82.956645), 0, ''];
 			y[37] = [1, 'Panda', '', '', g(), 0, ''];
 			y[38] = [1, 'Pizza Square', '', '', g(42.453855, -82.938276), 0, ''];
 			y[39] = [1, 'Plaza Mexico', '', '', g(42.465058, -82.931126), 0, ''];
-			y[40] = [1, 'Popeye's', '', '', g(42.465148, -82.928295), 0, ''];
+			y[40] = [1, 'Popeye&apos;s', '', '', g(42.465148, -82.928295), 0, ''];
 			y[41] = [1, 'Scoreboard Sports Bar & Grill', '', '', g(42.480226, -82.955936), 0, ''];
 			y[42] = [1, 'Shawarma Express', '', '', g(42.479489, -82.948824), 0, ''];
 			y[43] = [1, 'Shish Kabob', '', '', g(42.460782, -82.960984), 0, ''];
-			y[44] = [1, 'Snooker's Pool & Pub', '', '', g(42.459500, -82.932982), 0, ''];
+			y[44] = [1, 'Snooker&apos;s Pool & Pub', '', '', g(42.459500, -82.932982), 0, ''];
 			y[45] = [1, 'Subway', '', '', g(42.465146, -82.929948), 0, ''];
 			y[46] = [1, 'Subway', '', '', g(42.463094, -82.960277), 0, ''];
 			y[47] = [1, 'Taco Bell', '', '', g(42.465354, -82.938304), 0, ''];
 			y[48] = [1, 'Villa Restaurant', '', '', g(42.454611, -82.965233), 0, ''];
 			y[49] = [1, 'Wah Hong Chop Suey', '', '', g(42.450736, -82.942593), 0, ''];
-			y[50] = [1, 'Wendy's', '', '', g(42.465537, -82.934832), 0, ''];
+			y[50] = [1, 'Wendy&apos;s', '', '', g(42.465537, -82.934832), 0, ''];
 			y[51] = [1, 'Western', '', '', g(42.456441, -82.963968), 0, ''];
 			y[52] = [1, 'White Castle', '', '', g(42.450380, -82.968444), 0, ''];
 			y[53] = [1, 'Milestone Grill', '', '', g(42.465453, -82.937006), 0, ''];
-			y[54] = [1, 'Ashby's', '', '', g(), 0, ''];
+			y[54] = [1, 'Ashby&apos;s', '', '', g(), 0, ''];
 			y[55] = [1, 'Wing Stop', '', '', g(42.463214, -82.960226), 0, ''];
-			y[56] = [1, 'Granma's House of Pancakes', '', '', g(42.465341, -82.943988), 0, ''];
-			y[57] = [1, 'Josephine's Soul Food', '', '', g(42.464982, -82.935152), 0, ''];
-			y[58] = [1, 'Sullivan's', '', '', g(42.465000, -82.932341), 0, ''];
+			y[56] = [1, 'Granma&apos;s House of Pancakes', '', '', g(42.465341, -82.943988), 0, ''];
+			y[57] = [1, 'Josephine&apos;s Soul Food', '', '', g(42.464982, -82.935152), 0, ''];
+			y[58] = [1, 'Sullivan&apos;s', '', '', g(42.465000, -82.932341), 0, ''];
 			y[59] = [1, 'Di Frattelli Pizza', '', '', g(42.465315, -82.924976), 0, ''];
 			y[60] = [1, 'Gratiot Avenue Memory Lane Café', '', '', g(), 0, ''];
 			y[61] = [1, 'Passport Pizza', '', '', g(42.480257, -82.949271), 0, ''];
 			y[62] = [1, 'East Detroit Bakery', '', '', g(42.464771, -82.941100), 0, ''];
 			y[63] = [1, 'Cup Cakes & Ice Cream Kids', '', '', g(42.464743, -82.940718), 0, ''];
+            y[64] = [1, 'Taormina&apos;s Pizza & Ice Cream', '', '', g(42.472294, -82.967218), 0, ''];
 
 
     
