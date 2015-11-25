@@ -70,7 +70,7 @@
         <span id="chinese" class="b">Chinese</span>
         <span id="italian" class="b">Italian</span>
         <span id="mexican" class="b">Mexican</span>
-        <span id="pizza" class="b" onclick="filterMap('Pizza')">Pizza</span>
+        <span id="pizza" class="b" onclick="filterMap('Pizza');">Pizza</span>
         <span id="sandwiches" class="b">Sandwiches</span>
         |||
         <span id="alcohol" class="c">Alcohol</span>
@@ -98,6 +98,34 @@
         
         // Array of types currently selected
         var t = new Array(100);
+        
+        // Variable to keep track of first click or not
+        var fc = 0;
+        
+        // keep map out here
+        var map;
+    
+        // Initialize the types
+        function initTypes(){
+            t[0] = ["Dine-In"];
+            t[1] = ["Take-Out"];
+            t[2] = ["American"];
+            t[3] = ["BBQ"];
+            t[4] = ["Chinese"];
+            t[5] = ["Italian"];
+            t[6] = ["Mexican"];
+            t[7] = ["Pizza"];
+            t[8] = ["Sandwiches"];
+            t[9] = ["Alcohol"];
+            t[10] = ["Bakery"];
+            t[11] = ["Bar"];
+            t[12] = ["Coffee"];
+            t[13] = ["Diner"];
+            t[14] = ["Family friendly"];
+            t[15] = ["Gluten-free friendly"];
+            t[16] = ["Vegan friendly"];
+            t[17] = ["Vegetarian friendly"];
+        }
     
         // This function shortens the code in the following Array (y)
         function g(lat,lng){return new google.maps.LatLng(lat,lng);}
@@ -174,7 +202,7 @@
             y[63] = [1, 'Taormina&apos;s Pizza &amp; Ice Cream', '', '', g(42.472294, -82.967218), 0, 'Pizza'];
             // *** ONLY EDIT THE DATA ABOVE IN THE SPREADSHEET AND THEN COPY AND PASTE TO HERE *** //
             
-            var map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 14, //Proper zoom level to see all of Eastpointe at once
                 center: {lat: 42.463964, lng: -82.955647}, //LatLng for the center of Eastpointe, Michigan
                 mapTypeId: google.maps.MapTypeId.MAP //This is the "map" view and not satellite view (loads more quickly and does not seem as overwhelming)
@@ -222,36 +250,54 @@
             } // END addMarkers
         } // END initMap
         
-        // Initialize the types
-        function initTypes(){
-            t[0] = ["Dine-In"];
-            t[1] = ["Take-Out"];
-            t[2] = ["American"];
-            t[3] = ["BBQ"];
-            t[4] = ["Chinese"];
-            t[5] = ["Italian"];
-            t[6] = ["Mexican"];
-            t[7] = ["Pizza"];
-            t[8] = ["Sandwiches"];
-            t[9] = ["Alcohol"];
-            t[10] = ["Bakery"];
-            t[11] = ["Bar"];
-            t[12] = ["Coffee"];
-            t[13] = ["Diner"];
-            t[14] = ["Family friendly"];
-            t[15] = ["Gluten-free friendly"];
-            t[16] = ["Vegan friendly"];
-            t[17] = ["Vegetarian friendly"];
-        }
-        
         //Show only the 
         function filterMap(typeName){
-            for (var i=0;i<t.length;i++){
-                if (t[i] == typeName){
-                    t = t.splice(i, 1) //Remove the item that was clicked from the array
-                }
+            if (fc == 0) {
+                fc++; //First click, so increment "fc" by 1 and only show what was clicked
+                t = t.slice(0, t.length); // Clear the initialized map showing all types
+                t[t.length] = typeName; // Add the type clicked on
+                
+                // Show only markers that match this type...
+                for (var i=0;i<y.length;i++){
+                    var types = y[i, 6]; // save types string
+                    var itsAMatch = types.match('/' + typeName + '/g'); //NOT A FUNCTION
+                    
+                    //need to remove markers also... somewhere
+                    
+                    // Create marker
+                    if (itsAMatch != "")
+                    {
+                        var marker = new google.maps.Marker({
+                            title: y[i][1],
+                            position: y[i][4],
+                            map: map
+                            // icon: shamrock
+                        }); //end Marker
+                    } // end IF
+                } // end FOR
             }
-        }
+            else {
+                // Second click or later, so add what was clicked
+                //for (var i=0;i<t.length;i++){
+                    //if (t[i] == typeName){
+                        t[t.length+1] = typeName; //Remove the item that was clicked from the array
+                    //} // end IF
+                //} // end FOR
+                
+                // Populate map according to types
+                //  for each item in the locations array...
+                for (var i=0;i<y.length;i++){
+                    var z = 0; // use this to skip a location once it matches a type
+                    
+                    // for each item in the type array...
+                    for (var j=0;j<t.length;j++){
+                        if (z == 0){
+                            z++; //increment z because this location matched a type that has been selected
+                        }
+                    }
+                }
+            } // end ELSE
+        } // end filterMap
         
     </script>
 
