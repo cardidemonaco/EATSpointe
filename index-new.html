@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>EATSpointe | Where to find food and drink in Eastpointe!</title>
+    <title>#EATSpointe | Where to find food and drink in Eastpointe!</title>
     
     <!-- 
         Cloud9 Terminal - https://docs.c9.io/docs/terminal
@@ -56,48 +56,65 @@
     
   </head>
 
-  <body onload="initMap();initTypes();">
+  <body onload="initMap()">
   
     <div style="display: inline; background-color: black; color: whitesmoke; font-size: 30px; padding-left: 8px; padding-right: 12px;">
-        <b>EATSpointe</b>
+        <b>#EATSpointe</b>
     </div>
     <div style="display: inline; background-color: black; color: whitesmoke;">
-        <span id="dineIn" class="a">Dine-In</span>
-        <span id="takeOut" class="a">Take-Out</span> 
+        <span id="dineIn" class="a" onclick="filterMap('Dine-in');">Dine-In</span>
+        <span id="takeOut" class="a" onclick="filterMap('Take-out');">Take-Out</span> 
         ||| 
-        <span id="american" class="b">American</span>
-        <span id="bbq" class="b">BBQ</span>
-        <span id="chinese" class="b">Chinese</span>
-        <span id="italian" class="b">Italian</span>
-        <span id="mexican" class="b">Mexican</span>
+        <span id="american" class="b" onclick="filterMap('American');">American</span>
+        <span id="chinese" class="b" onclick="filterMap('Chinese');">Chinese</span>
+        <span id="italian" class="b" onclick="filterMap('Italian');">Italian</span>
+        <span id="mexican" class="b" onclick="filterMap('Mexican');">Mexican</span>
         <span id="pizza" class="b" onclick="filterMap('Pizza');">Pizza</span>
-        <span id="sandwiches" class="b">Sandwiches</span>
+        <span id="sandwiches" class="b" onclick="filterMap('Sandwiches');">Sandwiches</span>
         |||
-        <span id="alcohol" class="c">Alcohol</span>
-        <span id="bakery" class="c">Bakery</span>
-        <span id="bar" class="c">Bar</span>
-        <span id="coffee" class="c">Coffee</span>
-        <span id="diner" class="c">Diner</span>
-        <span id="familyFriendly" class="c">Family friendly</span>
+        <span id="alcohol" class="c" onclick="filterMap('Alcohol');">Alcohol</span>
+        <span id="bakery" class="c" onclick="filterMap('Bakery');">Bakery</span>
+        <span id="bar" class="c" onclick="filterMap('Bar');">Bar</span>
+        <span id="coffee" class="c" onclick="filterMap('Coffee');">Coffee</span>
+        <span id="diner" class="c" onclick="filterMap('Diner');">Diner</span>
+        <span id="familyFriendly" class="c" onclick="filterMap('Family friendly');">Family friendly</span>
         |||
-        <span id="glutenFreeFriendly" class="d">Gluten-free friendly</span>
-        <span id="veganFriendly" class="d">Vegan friendly</span>
-        <span id="vegetarianFriendly" class="d">Vegetarian friendly</span>
+        <span id="glutenFreeFriendly" class="d" onclick="filterMap('Gluten-free friendly');">Gluten-free friendly</span>
+        <span id="veganFriendly" class="d" onclick="filterMap('Vegan friendly');">Vegan friendly</span>
+        <span id="vegetarianFriendly" class="d" onclick="filterMap('Vegetarian friendly');">Vegetarian friendly</span>
         ||| 
-        <span id="numberOfLocations">63</span> Locations <!-- Change this to a dynamic number according to the array -->
-        |||
-        FB TW
+        <span id="numberOfLocations">63</span> Locations <!-- Change this to a dynamic number according to the Markers that are not null -->
     </div>
-    <div id="map" style="margin-top: 8px;" onload="initMap()"></div>
+    <div id="map" style="margin-top: 8px;"></div>
     
     <script>
 
-    
         // Array of locations
-        var y = new Array(1000);
+        var y = new Array; //do not need to specify a size
         
         // Array of types currently selected
-        var t = new Array(100);
+        var t = new Array; //do not need to specify a size
+        t[0] = 'Dine-In';
+        t[1] = 'Take-Out';
+        t[2] = 'American';
+        t[3] = 'BBQ';
+        t[4] = 'Chinese';
+        t[5] = 'Italian';
+        t[6] = 'Mexican';
+        t[7] = 'Pizza';
+        t[8] = 'Sandwiches';
+        t[9] = 'Alcohol';
+        t[10] = 'Bakery';
+        t[11] = 'Bar';
+        t[12] = 'Coffee';
+        t[13] = 'Diner';
+        t[14] = 'Family friendly';
+        t[15] = 'Gluten-free friendly';
+        t[16] = 'Vegan friendly';
+        t[17] = 'Vegetarian friendly';
+        t[18] = 'Ice Cream';
+        t[19] = 'Mediterranean';
+        t[20] = 'Breakfast';
         
         // Variable to keep track of first click or not
         var fc = 0;
@@ -105,106 +122,80 @@
         // keep map out here
         var map;
     
-        // Initialize the types
-        function initTypes(){
-            t[0] = ["Dine-In"];
-            t[1] = ["Take-Out"];
-            t[2] = ["American"];
-            t[3] = ["BBQ"];
-            t[4] = ["Chinese"];
-            t[5] = ["Italian"];
-            t[6] = ["Mexican"];
-            t[7] = ["Pizza"];
-            t[8] = ["Sandwiches"];
-            t[9] = ["Alcohol"];
-            t[10] = ["Bakery"];
-            t[11] = ["Bar"];
-            t[12] = ["Coffee"];
-            t[13] = ["Diner"];
-            t[14] = ["Family friendly"];
-            t[15] = ["Gluten-free friendly"];
-            t[16] = ["Vegan friendly"];
-            t[17] = ["Vegetarian friendly"];
-        }
-    
-        // This function shortens the code in the following Array (y)
-        function g(lat,lng){return new google.maps.LatLng(lat,lng);}
-
         // SCRIPT TO INITIALIZE THE MAP
         // Create the Google Map
         function initMap() {
                 
             // *** ONLY EDIT THE DATA BELOW IN THE SPREADSHEET AND THEN COPY AND PASTE TO HERE *** //
-            // 0:Active/Inactive; 1:Name; 2:Description; 3:Address; 4:Lat/Lng; 5:ERCC Member?; 6:Types
-            y[0] = [1, 'Cloverleaf Bar & Restaurant', '', '24443 Gratiot Avenue', g(42.474663, -82.952055), 1, 'Alcohol, American, Bar, Pizza'];
-            y[1] = [1, 'Villa Restaurant & Pizzeria', '', '21311 Gratiot Avenue', g(42.454643, -82.965264), 1, 'Italian, Pizza'];
-            y[2] = [1, 'Donna&apos;s Family Dining', '', '18640 East 10 Mile Road', g(42.479889, -82.927846), 1, 'American, Diner'];
-            y[3] = [1, 'Friends Tavern', '', '23850 Gratiot Avenue', g(42.472043, -82.952674), 1, 'Bar'];
-            y[4] = [1, 'Grand Dimitre&apos;s', '', '25001 Gratiot Avenue', g(42.480217, -82.948572), 1, 'Diner, American'];
-            y[5] = [1, 'Hungry Howie&apos;s Pizza', '', '22441 Kelly Road', g(42.463503, -82.928942), 1, 'Pizza'];
-            y[6] = [1, 'McDonald&apos;s', '', '17921 East 9 Mile Road', g(42.465577, -82.935909), 1, 'American'];
-            y[7] = [1, 'Olive Garden', '', '24845 Gratiot Avenue', g(42.478462, -82.949634), 1, 'Italian'];
-            y[8] = [1, 'Papa John&apos;s Pizza', '', '22241 Kelly Road', g(42.462028, -82.930547), 1, 'Pizza'];
-            y[9] = [1, 'Papa Romano&apos;s & Mr. Pita', '', '22661 Gratiot Avenue', g(42.464322, -82.959707), 1, 'Pizza'];
-            y[10] = [1, 'Pizza Me', '', '', g(), 1, 'Pizza'];
-            y[11] = [1, 'Salvatore Scallopini', '', '22611 Gratiot Avenue', g(42.463848, -82.959658), 1, 'Italian'];
-            y[12] = [1, 'Sugarbush Tavern', '', '19080 East 10 Mile Road', g(42.479991, -82.921896), 1, 'Bar, American'];
-            y[13] = [1, 'Tim Horton&apos;s', '', '17210 East 9 Mile Road', g(42.464667, -82.944054), 1, 'Coffee'];
-            y[14] = [1, '10x Better Soul Food', '', '', g(), 0, 'BBQ'];
-            y[15] = [1, 'Adriana&apos;s Kitchen', '', '', g(42.465112, -82.948927), 0, ''];
-            y[16] = [1, 'Andary&apos;s Grill & Deli', '', '', g(42.470411, -82.954819), 0, ''];
-            y[17] = [1, 'Big Boy', '', '', g(42.465559, -82.958383), 0, ''];
-            y[18] = [1, 'Boney Moroney Bar', '', '', g(42.456316, -82.962807), 0, ''];
-            y[19] = [1, 'Bread Basket Deli', '', '', g(42.450935, -82.940886), 0, ''];
-            y[20] = [1, 'Burger King', '', '', g(42.450942, -82.966426), 0, ''];
-            y[21] = [1, 'China Wok', '', '', g(42.462667, -82.929915), 0, ''];
-            y[22] = [1, 'Coffee Break Café', '', '', g(42.479804, -82.920525), 0, ''];
-            y[23] = [1, 'Dairy Queen Brazier', '', '', g(42.465111, -82.944537), 0, ''];
-            y[24] = [1, 'Domino&apos;s Pizza', '', '', g(42.479924, -82.964993), 0, 'Pizza'];
-            y[25] = [1, 'Eastpointe Pub', '', '', g(42.465298, -82.924711), 0, ''];
-            y[26] = [1, 'Five Guys & Fries', '', '', g(42.464157, -82.959707), 0, ''];
-            y[27] = [1, 'Guiseppe&apos;s Bakery', '', '', g(42.458315, -82.934028), 0, ''];
-            y[28] = [1, 'Happy Garden', '', '', g(42.462424, -82.958903), 0, ''];
-            y[29] = [1, 'Happy&apos;s Pizza', '', '', g(42.471669, -82.952741), 0, 'Pizza'];
-            y[30] = [1, 'Jet&apos;s Pizza', '', '', g(42.479976, -82.918491), 0, 'Pizza'];
-            y[31] = [1, 'KC&apos;s Dairy Twist', '', '', g(42.479825, -82.958237), 0, ''];
-            y[32] = [1, 'Marz Bar', '', '', g(42.479803, -82.964470), 0, ''];
-            y[33] = [1, 'Legend&apos;s Coney Express', '', '', g(42.465404, -82.937518), 0, ''];
-            y[34] = [1, 'Little Caesar&apos;s', '', '', g(42.479923, -82.955558), 0, 'Pizza'];
-            y[35] = [1, 'McGee&apos;s Lounge', '', '', g(42.459181, -82.961050), 0, ''];
-            y[36] = [1, 'O&apos;Hara&apos;s Irish Pub', '', '', g(42.479876, -82.956645), 0, ''];
-            y[37] = [1, 'Panda', '', '', g(), 0, ''];
-            y[38] = [1, 'Pizza Square', '', '', g(42.453855, -82.938276), 0, 'Pizza'];
-            y[39] = [1, 'Plaza Mexico', '', '', g(42.465058, -82.931126), 0, ''];
-            y[40] = [1, 'Popeye&apos;s', '', '', g(42.465148, -82.928295), 0, ''];
-            y[41] = [1, 'Scoreboard Sports Bar & Grill', '', '', g(42.480226, -82.955936), 0, ''];
-            y[42] = [1, 'Shawarma Express', '', '', g(42.479489, -82.948824), 0, ''];
-            y[43] = [1, 'Shish Kabob', '', '', g(42.460782, -82.960984), 0, ''];
-            y[44] = [1, 'Snooker&apos;s Pool & Pub', '', '', g(42.459500, -82.932982), 0, ''];
-            y[45] = [1, 'Subway', '', '', g(42.465146, -82.929948), 0, ''];
-            y[46] = [1, 'Subway', '', '', g(42.463094, -82.960277), 0, ''];
-            y[47] = [1, 'Taco Bell', '', '', g(42.465354, -82.938304), 0, ''];
-            y[48] = [1, 'Wah Hong Chop Suey', '', '', g(42.450736, -82.942593), 0, ''];
-            y[49] = [1, 'Wendy&apos;s', '', '', g(42.465537, -82.934832), 0, ''];
-            y[50] = [1, 'Western', '', '', g(42.456441, -82.963968), 0, ''];
-            y[51] = [1, 'White Castle', '', '', g(42.450380, -82.968444), 0, ''];
-            y[52] = [1, 'Milestone Grill', '', '', g(42.465453, -82.937006), 0, 'Pizza'];
-            y[53] = [1, 'Ashby&apos;s', '', '', g(), 0, ''];
-            y[54] = [1, 'Wing Stop', '', '', g(42.463214, -82.960226), 0, ''];
-            y[55] = [1, 'Granma&apos;s House of Pancakes', '', '', g(42.465341, -82.943988), 0, ''];
-            y[56] = [1, 'Josephine&apos;s Soul Food', '', '', g(42.464982, -82.935152), 0, ''];
-            y[57] = [1, 'Sullivan&apos;s', '', '', g(42.465000, -82.932341), 0, ''];
-            y[58] = [1, 'Di Frattelli Pizza', '', '', g(42.465315, -82.924976), 0, 'Pizza'];
-            y[59] = [1, 'Gratiot Avenue Memory Lane Café', '', '', g(), 0, ''];
-            y[60] = [1, 'Passport Pizza', '', '', g(42.480257, -82.949271), 0, 'Pizza'];
-            y[61] = [1, 'East Detroit Bakery', '', '', g(42.464771, -82.941100), 0, ''];
-            y[62] = [1, 'Cup Cakes &amp; Ice Cream Kids', '', '', g(42.464743, -82.940718), 0, ''];
-            y[63] = [1, 'Taormina&apos;s Pizza &amp; Ice Cream', '', '', g(42.472294, -82.967218), 0, 'Pizza'];
+            // 0:Active/Inactive; 1:Name; 2:Description; 3:Address; 4:Lat; 5:Lng; 6:ERCC Member?; 7:Types; 8:Marker (not available until later)
+            y[0] = [1, 'Cloverleaf Bar & Restaurant', '', '24443 Gratiot Avenue', 42.474663, -82.952055, 1, 'Alcohol, American, Bar, Pizza, Italian, Sandwiches, Family friendly'];
+            y[1] = [1, 'Villa Restaurant & Pizzeria', '', '21311 Gratiot Avenue', 42.454643, -82.965264, 1, 'Italian, Pizza, Alcohol, Family friendly'];
+            y[2] = [1, 'Donna&apos;s Family Dining', '', '18640 East 10 Mile Road', 42.479889, -82.927846, 1, 'American, Diner, Sandwiches, Coffee'];
+            y[3] = [1, 'Friends Tavern', '', '23850 Gratiot Avenue', 42.472043, -82.952674, 1, 'Bar, Alcohol'];
+            y[4] = [1, 'Grand Dimitre&apos;s', '', '25001 Gratiot Avenue', 42.480217, -82.948572, 1, 'Diner, American, Coffee, Breakfast'];
+            y[5] = [1, 'Hungry Howie&apos;s Pizza', '', '22441 Kelly Road', 42.463503, -82.928942, 1, 'Pizza'];
+            y[6] = [1, 'McDonald&apos;s', '', '17921 East 9 Mile Road', 42.465577, -82.935909, 1, 'American, Coffee'];
+            y[7] = [1, 'Olive Garden', '', '24845 Gratiot Avenue', 42.478462, -82.949634, 1, 'Italian, Alcohol'];
+            y[8] = [1, 'Papa John&apos;s Pizza', '', '22241 Kelly Road', 42.462028, -82.930547, 1, 'Pizza'];
+            y[9] = [1, 'Papa Romano&apos;s & Mr. Pita', '', '22661 Gratiot Avenue', 42.464322, -82.959707, 1, 'Pizza'];
+            y[10] = [1, 'Pizza Me', '', '', , , 1, 'Pizza'];
+            y[11] = [1, 'Salvatore Scallopini', '', '22611 Gratiot Avenue', 42.463848, -82.959658, 1, 'Italian, Alcohol'];
+            y[12] = [1, 'Sugarbush Tavern', '', '19080 East 10 Mile Road', 42.479991, -82.921896, 1, 'Bar, American, Sandwiches'];
+            y[13] = [1, 'Tim Horton&apos;s', '', '17210 East 9 Mile Road', 42.464667, -82.944054, 1, 'Coffee'];
+            y[14] = [1, 'Adriana&apos;s Kitchen', '', '', 42.465112, -82.948927, 0, 'American'];
+            y[15] = [1, 'Andary&apos;s Grill & Deli', '', '', 42.470411, -82.954819, 0, 'American, Coffee, Family friendly'];
+            y[16] = [1, 'Big Boy', '', '', 42.465559, -82.958383, 0, 'American, Sandwiches, Coffee'];
+            y[17] = [1, 'Boney Moroney Bar', '', '', 42.456316, -82.962807, 0, 'Bar, Alcohol'];
+            y[18] = [1, 'Bread Basket Deli', '', '', 42.450935, -82.940886, 0, 'Sandwiches'];
+            y[19] = [1, 'Burger King', '', '', 42.450942, -82.966426, 0, 'Sandwiches'];
+            y[20] = [1, 'China Wok', '', '', 42.462667, -82.929915, 0, 'Chinese'];
+            y[21] = [1, 'Coffee Break Café', '', '', 42.479804, -82.920525, 0, 'Coffee'];
+            y[22] = [1, 'Dairy Queen Brazier', '', '', 42.465111, -82.944537, 0, 'American, Sandwiches, Family friendly, Ice Cream'];
+            y[23] = [1, 'Domino&apos;s Pizza', '', '', 42.479924, -82.964993, 0, 'Pizza'];
+            y[24] = [1, 'Eastpointe Pub', '', '', 42.465298, -82.924711, 0, 'Bar, Alcohol'];
+            y[25] = [1, 'Five Guys & Fries', '', '', 42.464157, -82.959707, 0, 'Sandwiches'];
+            y[26] = [1, 'Guiseppe&apos;s Bakery', '', '', 42.458315, -82.934028, 0, 'Bakery'];
+            y[27] = [1, 'Happy Garden', '', '', 42.462424, -82.958903, 0, 'Chinese'];
+            y[28] = [1, 'Happy&apos;s Pizza', '', '', 42.471669, -82.952741, 0, 'Pizza'];
+            y[29] = [1, 'Jet&apos;s Pizza', '', '', 42.479976, -82.918491, 0, 'Pizza'];
+            y[30] = [1, 'KC&apos;s Dairy Twist', '', '', 42.479825, -82.958237, 0, 'Ice Cream, Family friendly'];
+            y[31] = [1, 'Last Call Bar', '', '', 42.479803, -82.964470, 0, 'Bar, Alcohol'];
+            y[32] = [1, 'Legend&apos;s Coney Express', '', '', 42.465404, -82.937518, 0, 'American, Sandwiches'];
+            y[33] = [1, 'Little Caesar&apos;s', '', '', 42.479923, -82.955558, 0, 'Pizza'];
+            y[34] = [1, 'McGee&apos;s Lounge', '', '', 42.459181, -82.961050, 0, 'Bar, Alcohol'];
+            y[35] = [1, 'O&apos;Hara&apos;s Irish Pub', '', '', 42.479876, -82.956645, 0, 'American, Sandwiches, Alcohol'];
+            y[36] = [1, 'Panda', '', '', , , 0, 'Chinese'];
+            y[37] = [1, 'Pizza Square', '', '', 42.453855, -82.938276, 0, 'Pizza'];
+            y[38] = [1, 'Plaza Mexico', '', '', 42.465058, -82.931126, 0, 'Mexican'];
+            y[39] = [1, 'Popeye&apos;s', '', '', 42.465148, -82.928295, 0, 'American'];
+            y[40] = [1, 'Scoreboard Sports Bar & Grill', '', '', 42.480226, -82.955936, 0, 'Bar, Alcohol'];
+            y[41] = [1, 'Shawarma Express', '', '', 42.479489, -82.948824, 0, 'Mediterranean'];
+            y[42] = [1, 'Shish Kabob', '', '', 42.460782, -82.960984, 0, 'Mediterranean'];
+            y[43] = [1, 'Snooker&apos;s Pool & Pub', '', '', 42.459500, -82.932982, 0, 'Bar, Alcohol, American'];
+            y[44] = [1, 'Subway', '', '', 42.465146, -82.929948, 0, 'Sandwiches'];
+            y[45] = [1, 'Subway', '', '', 42.463094, -82.960277, 0, 'Sandwiches'];
+            y[46] = [1, 'Taco Bell', '', '', 42.465354, -82.938304, 0, 'Mexican'];
+            y[47] = [1, 'Wah Hong Chop Suey', '', '', 42.450736, -82.942593, 0, 'Chinese'];
+            y[48] = [1, 'Wendy&apos;s', '', '', 42.465537, -82.934832, 0, 'American, Sandwiches'];
+            y[49] = [1, 'Western', '', '', 42.456441, -82.963968, 0, 'American'];
+            y[50] = [1, 'White Castle', '', '', 42.450380, -82.968444, 0, 'American'];
+            y[51] = [1, 'Milestone Grill', '', '', 42.465453, -82.937006, 0, 'Pizza, Bar, Alcohol, Mediterranean'];
+            y[52] = [1, 'Ashby&apos;s', '', '', , , 0, ''];
+            y[53] = [1, 'Wing Stop', '', '', 42.463214, -82.960226, 0, 'American'];
+            y[54] = [1, 'Granma&apos;s House of Pancakes', '', '', 42.465341, -82.943988, 0, 'American, Breakfast'];
+            y[55] = [1, '10x Better Soul Food', '', '', 42.464982, -82.935152, 0, 'American'];
+            y[56] = [1, 'Sullivan&apos;s', '', '', 42.465000, -82.932341, 0, 'Bar, Alcohol'];
+            y[57] = [1, 'Di Frattelli Pizza', '', '', 42.465315, -82.924976, 0, 'Pizza'];
+            y[58] = [1, 'Gratiot Avenue Memory Lane Café', '', '', , , 0, ''];
+            y[59] = [1, 'Passport Pizza', '', '', 42.480257, -82.949271, 0, 'Pizza'];
+            y[60] = [1, 'East Detroit Bakery', '', '', 42.464771, -82.941100, 0, 'Bakery'];
+            y[61] = [1, 'Cup Cakes & Ice Cream Kids', '', '', 42.464743, -82.940718, 0, 'Bakery'];
+            y[62] = [1, 'Taormina&apos;s Pizza & Ice Cream', '', '', 42.472294, -82.967218, 0, 'Pizza'];
             // *** ONLY EDIT THE DATA ABOVE IN THE SPREADSHEET AND THEN COPY AND PASTE TO HERE *** //
             
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 14, //Proper zoom level to see all of Eastpointe at once
-                center: {lat: 42.463964, lng: -82.955647}, //LatLng for the center of Eastpointe, Michigan
+                center: {lat: 42.463964, lng: -82.940000}, //LatLng for the center of Eastpointe, Michigan lat: 42.463964, lng: -82.955647
                 mapTypeId: google.maps.MapTypeId.MAP //This is the "map" view and not satellite view (loads more quickly and does not seem as overwhelming)
             });
           
@@ -219,7 +210,7 @@
                     // Create marker
                     var marker = new google.maps.Marker({
                         title: y[i][1],
-                        position: y[i][4],
+                        position: {lat: y[i][4], lng: y[i][5]}, //changed this to use separate values from array
                         map: map
                         // icon: shamrock
                     });
@@ -228,7 +219,7 @@
                     var c = "";
                     
                     var ercc = "";
-                    if(y[i][5] == 1){
+                    if(y[i][6] == 1){
                         ercc = "<i>Eastpointe-Roseville Chamber of Commerce Member</i><br />"
                     }
                     else{
@@ -247,55 +238,88 @@
                         infowindow.open(map, marker);
                     });
                     
+                    y[i][8] = marker;
+                    
             } // END addMarkers
         } // END initMap
         
-        //Show only the 
+        //Show only the Types that are highlighted (have been selected by the user, except initial load shows all)
         function filterMap(typeName){
+            
+            //First click, so all were showing up to this point and now we only want to show what was clicked
             if (fc == 0) {
                 fc++; //First click, so increment "fc" by 1 and only show what was clicked
-                t = t.slice(0, t.length); // Clear the initialized map showing all types
+                t = []; // Clear the initialized map showing all types t.slice(0, t.length);
                 t[t.length] = typeName; // Add the type clicked on
                 
                 // Show only markers that match this type...
                 for (var i=0;i<y.length;i++){
-                    var types = y[i, 6]; // save types string
-                    var itsAMatch = types.match('/' + typeName + '/g'); //NOT A FUNCTION
+                    var types = y[i][7]; // save types string from initial array
+                    var itsAMatch = types.indexOf(typeName); 
                     
-                    //need to remove markers also... somewhere
+                    //document.write(types);
                     
-                    // Create marker
-                    if (itsAMatch != "")
-                    {
-                        var marker = new google.maps.Marker({
-                            title: y[i][1],
-                            position: y[i][4],
-                            map: map
-                            // icon: shamrock
-                        }); //end Marker
+                    //If it is a match, show it (indexOf will return "-1" if Type not found)
+                    if (itsAMatch != -1) {
+                        var thisOne = y[i][8];
+                        thisOne.setMap(map);
                     } // end IF
+                    //If it is not a match, do not show it
+                    else {
+                        var thisOne = y[i][8];
+                        thisOne.setMap(null);
+                    } // end ELSE
                 } // end FOR
-            }
+            } // end IF
+            
+            //Second click or later, and we want to determine if the item clicked should be shown or not
             else {
-                // Second click or later, so add what was clicked
-                //for (var i=0;i<t.length;i++){
-                    //if (t[i] == typeName){
-                        t[t.length+1] = typeName; //Remove the item that was clicked from the array
-                    //} // end IF
-                //} // end FOR
+                // Second click or later, so add or remove what was clicked to the types array (on first click the Types array was cleared)
+                var wasRemoved = 0; //used later to determine if the type was already clicked
+                
+                //First determine if the typename is already in the array...
+                for (var j=0;j<t.length;j++){
+                    if (t[j] == typeName){ //FOR list array item vs. typeName passed in from function
+                        t.splice(j, 1); //Remove the item that was clicked from the array since it was clicked again
+                        wasRemoved = 1; //Use this to know if the Type was added or not
+                    } // end IF
+                    //document.write(types); //Print each type
+                } // end FOR
+                
+                //Add what was clicked to the Types array because it is not there and should be
+                if (wasRemoved != 1){
+                    t.push(typeName); //Add the typename since it was not found in the array after clicking on it
+                }
+                
+                //AT THIS POINT, THE TYPES ARRAY SHOULD BE ACCURATE TO WHAT SHOULD BE SHOWN ON THE MAP, SO SHOW THEM...
                 
                 // Populate map according to types
                 //  for each item in the locations array...
-                for (var i=0;i<y.length;i++){
+                for (var m=0;m<y.length;m++){
+                    
                     var z = 0; // use this to skip a location once it matches a type
                     
-                    // for each item in the type array...
-                    for (var j=0;j<t.length;j++){
-                        if (z == 0){
+                    for (var n=0;n<t.length;n++){
+                        
+                        //Need to determine if the location in array's type list matches the type we are on right now in the types array...
+                        var types = y[m][7]; // save types string from initial array
+                        var itsAMatch = types.indexOf(t[n]); //This should not be typeName, but the type in the array since we already know what we want to show
+                        if (itsAMatch != -1) {
+                            
                             z++; //increment z because this location matched a type that has been selected
-                        }
-                    }
-                }
+                            
+                            var thisOne = y[m][8]; //grab marker
+                            thisOne.setMap(map); //make sure marker is on map
+                        } // end IF
+                    } // end FOR
+                    
+                    if (z == 0){
+                        //Remove the pointer because it didn't match anything
+                        var thisOne = y[m][8]; //grab marker
+                        thisOne.setMap(null); //make sure marker is not on map
+                    } // end IF
+                    
+                } // end FOR 
             } // end ELSE
         } // end filterMap
         
