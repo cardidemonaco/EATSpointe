@@ -52,6 +52,7 @@
         .c {background-color: #019fb8;} /* blue */
         .b {background-color: #fec724; color: black;} /* yellow */
         .d {background-color: #9abb26; color: black;} /* purple */
+        .unselected {background-color: #808080;} /* light grey */
     </style>
     
   </head>
@@ -62,26 +63,26 @@
         <b>#EATSpointe</b>
     </div>
     <div style="display: inline; background-color: black; color: whitesmoke;">
-        <span id="dineIn" class="a" onclick="filterMap('Dine-in');">Dine-In</span>
-        <span id="takeOut" class="a" onclick="filterMap('Take-out');">Take-Out</span> 
+        <span id="dineIn" class="menu a" onclick="filterMap('Dine-in');">Dine-In</span>
+        <span id="takeOut" class="menu a" onclick="filterMap('Take-out');">Take-Out</span> 
         ||| 
-        <span id="american" class="b" onclick="filterMap('American');">American</span>
-        <span id="chinese" class="b" onclick="filterMap('Chinese');">Chinese</span>
-        <span id="italian" class="b" onclick="filterMap('Italian');">Italian</span>
-        <span id="mexican" class="b" onclick="filterMap('Mexican');">Mexican</span>
-        <span id="pizza" class="b" onclick="filterMap('Pizza');">Pizza</span>
-        <span id="sandwiches" class="b" onclick="filterMap('Sandwiches');">Sandwiches</span>
+        <span id="american" class="menu b" onclick="filterMap('American');">American</span>
+        <span id="chinese" class="menu b" onclick="filterMap('Chinese');">Chinese</span>
+        <span id="italian" class="menu b" onclick="filterMap('Italian');">Italian</span>
+        <span id="mexican" class="menu b" onclick="filterMap('Mexican');">Mexican</span>
+        <span id="pizza" class="menu b" onclick="filterMap('Pizza');">Pizza</span>
+        <span id="sandwiches" class="menu b" onclick="filterMap('Sandwiches');">Sandwiches</span>
         |||
-        <span id="alcohol" class="c" onclick="filterMap('Alcohol');">Alcohol</span>
-        <span id="bakery" class="c" onclick="filterMap('Bakery');">Bakery</span>
-        <span id="bar" class="c" onclick="filterMap('Bar');">Bar</span>
-        <span id="coffee" class="c" onclick="filterMap('Coffee');">Coffee</span>
-        <span id="diner" class="c" onclick="filterMap('Diner');">Diner</span>
-        <span id="familyFriendly" class="c" onclick="filterMap('Family friendly');">Family friendly</span>
+        <span id="alcohol" class="menu c" onclick="filterMap('Alcohol');">Alcohol</span>
+        <span id="bakery" class="menu c" onclick="filterMap('Bakery');">Bakery</span>
+        <span id="bar" class="menu c" onclick="filterMap('Bar');">Bar</span>
+        <span id="coffee" class="menu c" onclick="filterMap('Coffee');">Coffee</span>
+        <span id="diner" class="menu c" onclick="filterMap('Diner');">Diner</span>
+        <span id="familyFriendly" class="menu c" onclick="filterMap('Family friendly');">Family friendly</span>
         |||
-        <span id="glutenFreeFriendly" class="d" onclick="filterMap('Gluten-free friendly');">Gluten-free friendly</span>
-        <span id="veganFriendly" class="d" onclick="filterMap('Vegan friendly');">Vegan friendly</span>
-        <span id="vegetarianFriendly" class="d" onclick="filterMap('Vegetarian friendly');">Vegetarian friendly</span>
+        <span id="glutenFreeFriendly" class="menu d" onclick="filterMap('Gluten-free friendly');">Gluten-free friendly</span>
+        <span id="veganFriendly" class="menu d" onclick="filterMap('Vegan friendly');">Vegan friendly</span>
+        <span id="vegetarianFriendly" class="menu d" onclick="filterMap('Vegetarian friendly');">Vegetarian friendly</span>
         ||| 
         <span id="numberOfLocations">63</span> Locations <!-- Change this to a dynamic number according to the Markers that are not null -->
     </div>
@@ -200,7 +201,7 @@
             });
           
             // Populate the map by adding markers
-            for (var i=0; i<y.length-2; i++) {
+            for (var i=0; i<y.length; i++) {
                 addMarker();
             } // END for
     
@@ -249,7 +250,18 @@
             //First click, so all were showing up to this point and now we only want to show what was clicked
             if (fc == 0) {
                 fc++; //First click, so increment "fc" by 1 and only show what was clicked
+                
                 t = []; // Clear the initialized map showing all types t.slice(0, t.length);
+                
+                //Also need to change the button background-color that was selected and make all others gray...
+                //Gray everything out first
+                var elements = document.getElementsByClassName("menu");
+                for (var abc=0; abc<elements.length; abc++) {
+                    elements[abc].style.backgroundColor = "#808080";
+                }
+                var docElement = event.target;
+                docElement.style.backgroundColor = "";
+                
                 t[t.length] = typeName; // Add the type clicked on
                 
                 // Show only markers that match this type...
@@ -287,8 +299,13 @@
                 } // end FOR
                 
                 //Add what was clicked to the Types array because it is not there and should be
+                var docElement2 = event.target; //get item that was clicked
                 if (wasRemoved != 1){
                     t.push(typeName); //Add the typename since it was not found in the array after clicking on it
+                    docElement2.style.backgroundColor = ""; //keep the color of item since we added it
+                }
+                else{
+                    docElement2.style.backgroundColor = "#808080"; //gray out since it is removed
                 }
                 
                 //AT THIS POINT, THE TYPES ARRAY SHOULD BE ACCURATE TO WHAT SHOULD BE SHOWN ON THE MAP, SO SHOW THEM...
@@ -315,12 +332,25 @@
                     
                     if (z == 0){
                         //Remove the pointer because it didn't match anything
-                        var thisOne = y[m][8]; //grab marker
-                        thisOne.setMap(null); //make sure marker is not on map
+                        var thisOneAgain = y[m][8]; //grab marker
+                        thisOneAgain.setMap(null); //make sure marker is not on map
                     } // end IF
                     
                 } // end FOR 
             } // end ELSE
+            
+            //Populate the amount of locations...
+            // Need to determine how many locations are on the map
+            var counter = 0; //counts locations shown
+            for (var a=0;a<y.length;a++){
+                var locMarker = y[a][8]; //location Marker from Locations array
+                if (locMarker.getMap() != null){
+                    // add one to variable for innerHTML below
+                    counter++;
+                }
+            }
+            document.getElementById("numberOfLocations").innerHTML = counter;
+            
         } // end filterMap
         
     </script>
